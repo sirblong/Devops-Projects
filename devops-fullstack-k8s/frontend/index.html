@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App</title>
+</head>
+<body>
+    <h1 id="activity">AAAAAA</h1>
+    <script>
+        fetch('http://backend-service:3000/api/activity')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('activity').innerText = data.activity + ' version1';
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

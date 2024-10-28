@@ -1,0 +1,49 @@
+#my-fullstack-app/
+#├── backend/
+#│   ├── app.js
+#│   ├── package.json
+#│   ├── Dockerfile
+#└── docker-compose.yml
+
+
+
+services:
+  frontend:
+    image: longnb/project-fe:v1.0
+    container_name: frontend_service
+    ports:
+      - "8086:80"
+    depends_on:
+      - backend
+    networks:
+      - app-networks
+
+  backend:
+    image: longnb/project-be:latest
+    container_name: backend_service
+    ports:
+      - "3006:3000"
+    environment:
+      POSTGRES_USER: postgres      # Tên user cho PostgreSQL
+      POSTGRES_PASSWORD: password   # Mật khẩu cho PostgreSQL
+      POSTGRES_DB: mydb            # Tên database sẽ được tạo
+    depends_on:
+      - database
+    networks:
+      - app-networks
+
+  database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres       # Tên user cho PostgreSQL
+      POSTGRES_PASSWORD: password    # Mật khẩu cho PostgreSQL
+      POSTGRES_DB: mydb             # Tên database sẽ được tạo
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-networks
+volumes:
+  db-data:
+
+networks:
+  app-networks:
